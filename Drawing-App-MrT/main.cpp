@@ -205,37 +205,123 @@ void Main_Frame::SelectPenSizePane(PenSize_Pane* pane)
 
 void Main_Frame::OnNew(wxCommandEvent& event)
 {
+	if (m_DrawingCanvas->IsCanvasEmpty())
+	{
+		return;
+	}
+	else
+	{
+		wxMessageDialog newDialog(this, "Do you want to save changes to Untitled?", "Drawing App", wxYES_NO | wxCANCEL | wxCANCEL_DEFAULT | wxICON_WARNING);
 
+		int result = newDialog.ShowModal();
+
+		if (result == wxID_YES)
+		{
+			if (m_CurrentFilePath.empty())
+			{
+				wxFileDialog saveFileDialog(this, "Save Drawing", "", "", "Drawing files (*.drw)|*.drw", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+				if (saveFileDialog.ShowModal() == wxID_CANCEL)
+					return;
+
+				m_DrawingCanvas->SaveCanvas(saveFileDialog.GetPath());
+			}
+			else
+			{
+				m_DrawingCanvas->SaveCanvas(m_CurrentFilePath);
+			}
+		}
+		else if (result == wxID_CANCEL)
+		{
+			return;
+		}
+
+		m_DrawingCanvas->ClearCanvas();
+		m_CurrentFilePath = L"";
+	}
 }
 
 void Main_Frame::OnOpen(wxCommandEvent& event)
 {
-	m_DrawingCanvas->LoadCanvas();
+	wxFileDialog openFileDialog(this, "Open Drawing", "", "", "Drawing files (*.drw)|*.drw", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+
+	if (openFileDialog.ShowModal() == wxID_CANCEL)
+		return;
+
+	m_CurrentFilePath = openFileDialog.GetPath().ToStdWstring();
+
+	m_DrawingCanvas->LoadCanvas(openFileDialog.GetPath());
 }
 
 void Main_Frame::OnSave(wxCommandEvent& event)
 {
-	wxMessageBox("Save");
+	if (m_CurrentFilePath.empty())
+	{
+		OnSaveAs(event);
+	}
+	else
+	{
+		m_DrawingCanvas->SaveCanvas(m_CurrentFilePath);
+	}
 }
 
 void Main_Frame::OnSaveAs(wxCommandEvent& event)
 {
-	m_DrawingCanvas->SaveCanvas();
+	wxFileDialog saveFileDialog(this, "Save Drawing", "", "", "Drawing files (*.drw)|*.drw", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+	if (saveFileDialog.ShowModal() == wxID_CANCEL)
+		return;
+
+	m_CurrentFilePath = saveFileDialog.GetPath().ToStdWstring();
+
+	m_DrawingCanvas->SaveCanvas(saveFileDialog.GetPath());
 }
 
 void Main_Frame::OnQuit(wxCommandEvent& event)
 {
-	Close(true);
+	if (m_DrawingCanvas->IsCanvasEmpty())
+	{
+		Close(true);
+	}
+	else
+	{
+		wxMessageDialog quitDialog(this, "Do you want to save changes to Untitled?", "Drawing App", wxYES_NO | wxCANCEL | wxCANCEL_DEFAULT | wxICON_WARNING);
+
+		int result = quitDialog.ShowModal();
+
+		if (result == wxID_YES)
+		{
+			if (m_CurrentFilePath.empty())
+			{
+				wxFileDialog saveFileDialog(this, "Save Drawing", "", "", "Drawing files (*.drw)|*.drw", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+				if (saveFileDialog.ShowModal() == wxID_CANCEL)
+					return;
+
+				m_DrawingCanvas->SaveCanvas(saveFileDialog.GetPath());
+			}
+			else
+			{
+				m_DrawingCanvas->SaveCanvas(m_CurrentFilePath);
+			}
+		}
+		else if (result == wxID_CANCEL)
+		{
+			return;
+		}
+
+		Close(true);
+	}
 }
 
 void Main_Frame::OnUndo(wxCommandEvent& event)
 {
-	wxMessageBox("Undo");
+	m_DrawingCanvas->Undo();
 }
 
 void Main_Frame::OnRedo(wxCommandEvent& event)
 {
-	wxMessageBox("Redo");
+	m_DrawingCanvas->Redo();
 }
 
 void Main_Frame::OnCut(wxCommandEvent& event)

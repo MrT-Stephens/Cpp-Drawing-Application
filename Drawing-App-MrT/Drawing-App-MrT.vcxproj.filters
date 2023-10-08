@@ -57,4 +57,7 @@
       <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="Drawing App.exe.manifest" />
+  </ItemGroup>
 </Project>

@@ -9,12 +9,12 @@
 #include "squigglePath.h"
 #include "xmlSerializer.h"
 
-class Drawing_Canvas : public wxWindow
+class Drawing_Canvas_Base : public wxWindow
 {
 public:
-	Drawing_Canvas(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size);
+	Drawing_Canvas_Base(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size);
 
-	virtual ~Drawing_Canvas() noexcept;
+	virtual ~Drawing_Canvas_Base() noexcept;
 
 	void SetCurrentWidth(int width);
 	void SetPopUpContextMenu(wxMenu* menu);
@@ -22,10 +22,12 @@ public:
 
 	void ClearCanvas();
 
-	void SaveCanvas();
-	void LoadCanvas();
+	void SaveCanvas(const wxString& path);
+	void LoadCanvas(const wxString& path);
 
-private:
+	bool IsCanvasEmpty() const;
+
+protected:
 	void OnPaint(wxPaintEvent& event);
 	void OnMouseDown(wxMouseEvent& event);
 	void OnMouseMove(wxMouseEvent& event);
@@ -33,11 +35,29 @@ private:
 	void OnMouseLeave(wxMouseEvent& event);
 	void OnContextMenuEvent(wxContextMenuEvent& event);
 
-private:
+	void CreateUndoState();
+
+
+protected:
 	bool m_IsDrawing;
 	wxMenu* m_ContextMenu = nullptr;
 
 	int m_CurrentWidth = 1;
 	wxColour m_CurrentColour = *wxBLACK;
 	std::vector<Squiggle_Path> m_Squiggles;
+};
+
+class Drawing_Canvas : public Drawing_Canvas_Base
+{
+public:
+	Drawing_Canvas(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size);
+
+	void Undo();
+	void Redo();
+
+	bool CanUndo() const;
+	bool CanRedo() const;
+
+private:
+	std::vector<Squiggle_Path> m_RedoStates;
 };
