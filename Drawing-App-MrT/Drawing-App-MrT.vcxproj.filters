@@ -27,6 +27,15 @@
     <ClInclude Include="penSizePane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="drawingCanvas.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="squigglePath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="xmlSerializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -39,6 +48,12 @@
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="penSizePane.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="drawingCanvas.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="xmlSerializer.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>

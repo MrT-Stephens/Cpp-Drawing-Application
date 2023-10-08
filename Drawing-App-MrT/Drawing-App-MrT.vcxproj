@@ -156,15 +156,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="colourPane.h" />
+    <ClInclude Include="drawingCanvas.h" />
     <ClInclude Include="penSizePane.h" />
     <ClInclude Include="selectablePane.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="squigglePath.h" />
+    <ClInclude Include="xmlSerializer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="colourPane.cpp" />
+    <ClCompile Include="drawingCanvas.cpp" />
     <ClCompile Include="penSizePane.cpp" />
     <ClCompile Include="selectablePane.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="xmlSerializer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
