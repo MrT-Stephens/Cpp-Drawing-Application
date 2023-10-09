@@ -15,6 +15,11 @@ Drawing_Canvas_Base::Drawing_Canvas_Base(wxWindow* parent, wxWindowID id, const 
 Drawing_Canvas_Base::~Drawing_Canvas_Base() noexcept
 {
 	delete m_ContextMenu;
+
+	for (size_t i = 0; i < m_CanvasObjects.size(); ++i)
+	{
+		delete m_CanvasObjects[i];
+	}
 }
 
 void Drawing_Canvas_Base::OnPaint(wxPaintEvent& event)
@@ -113,6 +118,11 @@ void Drawing_Canvas_Base::SetCurrentToolType(Tool_Type toolType)
 
 void Drawing_Canvas_Base::ClearCanvas()
 {
+	for (size_t i = 0; i < m_CanvasObjects.size(); ++i)
+	{
+		delete m_CanvasObjects[i];
+	}
+
 	m_CanvasObjects.clear();
 	this->Refresh();
 }
@@ -192,15 +202,23 @@ bool Drawing_Canvas::CanRedo() const
 	return (!m_RedoStates.empty()) ? true : false;
 }
 
+void Drawing_Canvas::ClearCanvas()
+{
+	size_t startSize = m_CanvasObjects.size();
+
+	for (size_t i = 0; i < startSize; ++i)
+	{
+		m_RedoStates.push_back(m_CanvasObjects.back());
+		m_CanvasObjects.pop_back();
+	}
+
+	this->Refresh();
+}
+
 Drawing_Canvas::~Drawing_Canvas() noexcept
 {
 	for (size_t i = 0; i < m_RedoStates.size(); ++i)
 	{
 		delete m_RedoStates[i];
-	}
-
-	for (size_t i = 0; i < m_CanvasObjects.size(); ++i)
-	{
-		delete m_CanvasObjects[i];
 	}
 }

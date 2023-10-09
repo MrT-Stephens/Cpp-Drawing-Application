@@ -2,8 +2,9 @@
 
 #include <wx/wx.h>
 #include <wx/graphics.h>
-
 #include <wx/xml/xml.h>
+
+#include "toolSelectionPane.h"
 
 namespace Xml_Object_Names
 {
@@ -39,12 +40,15 @@ namespace Xml_Object_Names
 
 class Canvas_Object
 {
+private:
+	Tool_Type m_ToolId;
+
 protected:
 	wxColour m_Colour;
 
 public:
 	Canvas_Object() = default;
-	Canvas_Object(const wxColour& colour) : m_Colour(colour) { };
+	Canvas_Object(const wxColour& colour, Tool_Type toolId) : m_Colour(colour), m_ToolId(toolId) { };
 
 	virtual ~Canvas_Object() noexcept { };
 
@@ -55,6 +59,7 @@ public:
 	virtual void Deserialize(const wxXmlNode* const node) = 0;
 
 	const wxColour& GetColour() const { return m_Colour; }
+	Tool_Type GetToolId() const { return m_ToolId; }
 };
 
 class Canvas_Squiggle : public Canvas_Object

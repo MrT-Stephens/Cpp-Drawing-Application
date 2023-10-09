@@ -22,7 +22,7 @@ public:
 	void SetCurrentColour(const wxColour& colour);
 	void SetCurrentToolType(Tool_Type toolType);
 
-	void ClearCanvas();
+	virtual void ClearCanvas();
 
 	void SaveCanvas(const wxString& path);
 	void LoadCanvas(const wxString& path);
@@ -59,6 +59,8 @@ public:
 
 	bool CanUndo() const;
 	bool CanRedo() const;
+
+	virtual void ClearCanvas() override;
 
 private:
 	std::vector<Canvas_Object*> m_RedoStates;
