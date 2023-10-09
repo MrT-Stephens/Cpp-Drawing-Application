@@ -26,13 +26,9 @@ void Drawing_Canvas_Base::OnPaint(wxPaintEvent& event)
 
 	if (gc)
 	{
-		for (const auto& squiggle : m_Squiggles)
+		for (const auto& squiggle : m_CanvasObjects)
 		{
-			if (squiggle.GetPointCount() > 1)
-			{
-				gc->SetPen(wxPen(squiggle.GetColour(), squiggle.GetWidth()));
-				gc->StrokeLines(squiggle.GetPointCount(), squiggle.GetPoints().data());
-			}
+			squiggle->Draw(gc);
 		}
 
 		delete gc;
@@ -41,7 +37,34 @@ void Drawing_Canvas_Base::OnPaint(wxPaintEvent& event)
 
 void Drawing_Canvas_Base::OnMouseDown(wxMouseEvent& event)
 {
-	m_Squiggles.push_back(Squiggle_Path(m_CurrentWidth, m_CurrentColour));
+	switch (m_CurrentToolType)
+	{
+	case Tool_Type::Pencil:
+	{
+		m_CanvasObjects.push_back(new Canvas_Squiggle(m_CurrentWidth, m_CurrentColour));
+
+		break;
+	}
+	case Tool_Type::Line:
+	{
+		m_CanvasObjects.push_back(new Canvas_Line(event.GetPosition(), event.GetPosition(), m_CurrentWidth, m_CurrentColour));
+
+		break;
+	}
+	case Tool_Type::Rectangle:
+	{
+		m_CanvasObjects.push_back(new Canvas_Rectangle(event.GetPosition(), m_CurrentColour));
+
+		break;
+	}
+	case Tool_Type::Circle:
+	{
+		m_CanvasObjects.push_back(new Canvas_Circle(event.GetPosition(), m_CurrentColour));
+
+		break;
+	}
+	}
+
 	m_IsDrawing = true;
 }
 
@@ -49,7 +72,7 @@ void Drawing_Canvas_Base::OnMouseMove(wxMouseEvent& event)
 {
 	if (m_IsDrawing)
 	{
-		m_Squiggles.back().AddPoint(event.GetPosition());
+		m_CanvasObjects.back()->HandleCreationByMouseDrag(event.GetPosition());
 		this->Refresh();
 	}
 }
@@ -83,9 +106,14 @@ void Drawing_Canvas_Base::SetCurrentColour(const wxColour& colour)
 	m_CurrentColour = colour;
 }
 
+void Drawing_Canvas_Base::SetCurrentToolType(Tool_Type toolType)
+{
+	m_CurrentToolType = toolType;
+}
+
 void Drawing_Canvas_Base::ClearCanvas()
 {
-	m_Squiggles.clear();
+	m_CanvasObjects.clear();
 	this->Refresh();
 }
 
@@ -103,7 +131,7 @@ void Drawing_Canvas_Base::SaveCanvas(const wxString& path)
 {
 	XML_Serializer serializer;
 
-	if (!serializer.Serialize(path, m_Squiggles))
+	if (!serializer.Serialize(path, m_CanvasObjects))
 	{
 		wxMessageBox("Failed to save file", "Error", wxICON_ERROR | wxOK);
 	}
@@ -115,7 +143,7 @@ void Drawing_Canvas_Base::LoadCanvas(const wxString& path)
 
 	XML_Serializer serializer;
 
-	if (!serializer.Deserialize(path, m_Squiggles))
+	if (!serializer.Deserialize(path, m_CanvasObjects))
 	{
 		wxMessageBox("Failed to load file", "Error", wxICON_ERROR | wxOK);
 		return;
@@ -126,7 +154,7 @@ void Drawing_Canvas_Base::LoadCanvas(const wxString& path)
 
 bool Drawing_Canvas_Base::IsCanvasEmpty() const
 {
-	return (m_Squiggles.empty() || m_Squiggles.back().GetPointCount() == 0) ? true : false;
+	return (m_CanvasObjects.empty()) ? true : false;
 }
 
 Drawing_Canvas::Drawing_Canvas(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size)
@@ -138,8 +166,8 @@ void Drawing_Canvas::Undo()
 {
 	if (this->CanUndo())
 	{
-		m_RedoStates.push_back(m_Squiggles.back());
-		m_Squiggles.pop_back();
+		m_RedoStates.push_back(m_CanvasObjects.back());
+		m_CanvasObjects.pop_back();
 		this->Refresh();
 	}
 }
@@ -148,7 +176,7 @@ void Drawing_Canvas::Redo()
 {
 	if (this->CanRedo())
 	{
-		m_Squiggles.push_back(m_RedoStates.back());
+		m_CanvasObjects.push_back(m_RedoStates.back());
 		m_RedoStates.pop_back();
 		this->Refresh();
 	}
@@ -156,10 +184,23 @@ void Drawing_Canvas::Redo()
 
 bool Drawing_Canvas::CanUndo() const
 {
-	return (m_Squiggles.empty() || m_Squiggles.back().GetPointCount() == 0) ? false : true;
+	return (!m_CanvasObjects.empty()) ? true : false;
 }
 
 bool Drawing_Canvas::CanRedo() const
 {
-	return (m_RedoStates.empty()) ? false : true;
+	return (!m_RedoStates.empty()) ? true : false;
+}
+
+Drawing_Canvas::~Drawing_Canvas() noexcept
+{
+	for (size_t i = 0; i < m_RedoStates.size(); ++i)
+	{
+		delete m_RedoStates[i];
+	}
+
+	for (size_t i = 0; i < m_CanvasObjects.size(); ++i)
+	{
+		delete m_CanvasObjects[i];
+	}
 }

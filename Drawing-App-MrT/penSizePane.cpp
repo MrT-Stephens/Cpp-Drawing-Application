@@ -10,7 +10,7 @@ int PenSize_Pane::GetPenSize() const
 	return m_PenSize;
 }
 
-void PenSize_Pane::DrawContent(wxGraphicsContext* gc, const wxRect& rect, int roundness)
+void PenSize_Pane::DrawContent(wxGraphicsContext* gc, const wxRect& rect, int roundness) const
 {
 	gc->SetPen(wxPen(wxSystemSettings::GetAppearance().IsDark() ? *wxBLACK : *wxWHITE));
 	gc->SetBrush(wxBrush(wxSystemSettings::GetAppearance().IsDark() ? *wxBLACK : *wxWHITE));

@@ -64,6 +64,12 @@ private:
         wxColour(139, 211, 199), wxColour(255, 42, 0 )
     };
 
+    // Tool Selection Pane Items
+    wxWrapSizer* m_ToolSelectionPanesSizer;
+
+    constexpr static int s_ToolSelectionPaneAmount = 4;
+    std::array<Tool_Selection_Pane*, s_ToolSelectionPaneAmount> m_ToolSelectionPanes;
+
     // Pen Size Pane Items
     wxWrapSizer* m_PenSizePanesSizer;
 
@@ -82,8 +88,10 @@ private:
 
     void SetUpColourPanes(wxWindow* parent, wxSizer* sizer);
     void SetUpPenSizePanes(wxWindow* parent, wxSizer* sizer);
+    void SetUpToolSelectionPanes(wxWindow* parent, wxSizer* sizer);
 
     void SelectColourPane(Colour_Pane* pane);
+    void SelectToolSelectionPane(Tool_Selection_Pane* pane);
     void SelectPenSizePane(PenSize_Pane* pane);
 
     void OnNew(wxCommandEvent& event);

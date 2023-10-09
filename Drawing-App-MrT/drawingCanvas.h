@@ -6,8 +6,9 @@
 
 #include <vector>
 
-#include "squigglePath.h"
+#include "canvasObject.h"
 #include "xmlSerializer.h"
+#include "toolSelectionPane.h"
 
 class Drawing_Canvas_Base : public wxWindow
 {
@@ -19,6 +20,7 @@ public:
 	void SetCurrentWidth(int width);
 	void SetPopUpContextMenu(wxMenu* menu);
 	void SetCurrentColour(const wxColour& colour);
+	void SetCurrentToolType(Tool_Type toolType);
 
 	void ClearCanvas();
 
@@ -35,22 +37,22 @@ protected:
 	void OnMouseLeave(wxMouseEvent& event);
 	void OnContextMenuEvent(wxContextMenuEvent& event);
 
-	void CreateUndoState();
-
-
 protected:
 	bool m_IsDrawing;
 	wxMenu* m_ContextMenu = nullptr;
 
+	Tool_Type m_CurrentToolType = Tool_Type::Pencil;
 	int m_CurrentWidth = 1;
 	wxColour m_CurrentColour = *wxBLACK;
-	std::vector<Squiggle_Path> m_Squiggles;
+	std::vector<Canvas_Object*> m_CanvasObjects;
 };
 
 class Drawing_Canvas : public Drawing_Canvas_Base
 {
 public:
 	Drawing_Canvas(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size);
+
+	virtual ~Drawing_Canvas() noexcept;
 
 	void Undo();
 	void Redo();
@@ -59,5 +61,5 @@ public:
 	bool CanRedo() const;
 
 private:
-	std::vector<Squiggle_Path> m_RedoStates;
+	std::vector<Canvas_Object*> m_RedoStates;
 };

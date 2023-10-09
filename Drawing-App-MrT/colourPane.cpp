@@ -10,7 +10,7 @@ wxColour Colour_Pane::GetPaneColour() const
 	return m_PaneColour;
 }
 
-void Colour_Pane::DrawContent(wxGraphicsContext* gc, const wxRect& rect, int roundness)
+void Colour_Pane::DrawContent(wxGraphicsContext* gc, const wxRect& rect, int roundness) const
 {
 	gc->SetPen(wxPen(m_PaneColour));
 	gc->SetBrush(wxBrush(m_PaneColour));

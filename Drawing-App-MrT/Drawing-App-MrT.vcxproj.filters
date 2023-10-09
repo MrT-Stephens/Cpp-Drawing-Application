@@ -30,10 +30,13 @@
     <ClInclude Include="drawingCanvas.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="squigglePath.h">
+    <ClInclude Include="xmlSerializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="xmlSerializer.h">
+    <ClInclude Include="canvasObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="toolSelectionPane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -54,6 +57,12 @@
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="xmlSerializer.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="canvasObject.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="toolSelectionPane.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -18,7 +18,7 @@ public:
 	bool IsSelected() const;
 
 protected:
-	virtual void DrawContent(wxGraphicsContext* gc, const wxRect& rect, int roundness) = 0;
+	virtual void DrawContent(wxGraphicsContext* gc, const wxRect& rect, int roundness) const = 0;
 
 private:
 	bool m_Selected = false;

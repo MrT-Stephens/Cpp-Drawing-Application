@@ -23,6 +23,7 @@ Main_Frame::Main_Frame(const wxString& title, const wxPoint& pos, const wxSize& 
 
 	SelectColourPane(m_ColourPanes[0]);
 	SelectPenSizePane(m_PenSizePanes[0]);
+	SelectToolSelectionPane(m_ToolSelectionPanes[0]);
 }
 
 void Main_Frame::SetUpMenuBar()
@@ -114,33 +115,20 @@ void Main_Frame::SetUpSplitterPanels()
 
 	m_ToolsMainSizer = new wxBoxSizer(wxVERTICAL);
 
-	auto colourLabel = new wxStaticText(m_ToolsPanel, wxID_ANY, "Colour", wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
-	colourLabel->SetForegroundColour(wxSystemSettings::GetAppearance().IsDark() ? *wxWHITE : *wxBLACK);
-	colourLabel->SetFont(wxFontInfo(FromDIP(10)).Bold());
-
-	m_ToolsMainSizer->Add(colourLabel, 0, wxLEFT | wxTOP, FromDIP(5));
-
 	m_ColourPanesSizer = new wxWrapSizer(wxHORIZONTAL);
 	SetUpColourPanes(m_ToolsPanel, m_ColourPanesSizer);
 
 	m_ToolsMainSizer->Add(m_ColourPanesSizer, 0, wxALL, FromDIP(5));
 
-	auto penSizeLabel = new wxStaticText(m_ToolsPanel, wxID_ANY, "Pen Size", wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
-	penSizeLabel->SetForegroundColour(wxSystemSettings::GetAppearance().IsDark() ? *wxWHITE : *wxBLACK);
-	penSizeLabel->SetFont(wxFontInfo(FromDIP(10)).Bold());
+	m_ToolSelectionPanesSizer = new wxWrapSizer(wxHORIZONTAL);
+	SetUpToolSelectionPanes(m_ToolsPanel, m_ToolSelectionPanesSizer);
 
-	m_ToolsMainSizer->Add(penSizeLabel, 0, wxLEFT | wxTOP, FromDIP(5));
+	m_ToolsMainSizer->Add(m_ToolSelectionPanesSizer, 0, wxALL, FromDIP(5));
 
 	m_PenSizePanesSizer = new wxWrapSizer(wxHORIZONTAL);
 	SetUpPenSizePanes(m_ToolsPanel, m_PenSizePanesSizer);
 
 	m_ToolsMainSizer->Add(m_PenSizePanesSizer, 0, wxALL, FromDIP(5));
-
-	auto toolsLabel = new wxStaticText(m_ToolsPanel, wxID_ANY, "Tools", wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
-	toolsLabel->SetForegroundColour(wxSystemSettings::GetAppearance().IsDark() ? *wxWHITE : *wxBLACK);
-	toolsLabel->SetFont(wxFontInfo(FromDIP(10)).Bold());
-
-	m_ToolsMainSizer->Add(toolsLabel, 0, wxLEFT | wxTOP, FromDIP(5));
 
 	m_ToolsPanel->SetSizer(m_ToolsMainSizer);
 
@@ -164,6 +152,22 @@ void Main_Frame::SetUpColourPanes(wxWindow* parent, wxSizer* sizer)
 		);
 
 		sizer->Add(m_ColourPanes[i], 0, wxRIGHT | wxBOTTOM, FromDIP(5));
+	}
+}
+
+void Main_Frame::SetUpToolSelectionPanes(wxWindow* parent, wxSizer* sizer)
+{
+	for (size_t i = 0; i < s_ToolSelectionPaneAmount; ++i)
+	{
+		m_ToolSelectionPanes[i] = new Tool_Selection_Pane(parent, wxID_ANY, (Tool_Type)(1000 + i));
+
+		m_ToolSelectionPanes[i]->Bind(wxEVT_LEFT_DOWN, [this, i](wxMouseEvent& event)
+			{
+				SelectToolSelectionPane(m_ToolSelectionPanes[i]);
+			}
+		);
+
+		sizer->Add(m_ToolSelectionPanes[i], 0, wxRIGHT | wxBOTTOM, FromDIP(5));
 	}
 }
 
@@ -191,6 +195,25 @@ void Main_Frame::SelectColourPane(Colour_Pane* pane)
 	}
 
 	m_DrawingCanvas->SetCurrentColour(pane->GetPaneColour());
+}
+
+void Main_Frame::SelectToolSelectionPane(Tool_Selection_Pane* pane)
+{
+	for (size_t i = 0; i < s_ToolSelectionPaneAmount; ++i)
+	{
+		m_ToolSelectionPanes[i]->SetSelected(m_ToolSelectionPanes[i] == pane ? true : false);
+	}
+
+	if (pane->GetToolType() == Tool_Type::Pencil || pane->GetToolType() == Tool_Type::Line)
+	{
+		m_PenSizePanesSizer->ShowItems(true);
+	}
+	else
+	{
+		m_PenSizePanesSizer->ShowItems(false);
+	}
+
+	m_DrawingCanvas->SetCurrentToolType(pane->GetToolType());
 }
 
 void Main_Frame::SelectPenSizePane(PenSize_Pane* pane)

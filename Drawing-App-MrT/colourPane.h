@@ -11,5 +11,5 @@ public:
 private:
 	wxColour m_PaneColour;
 
-	virtual void DrawContent(wxGraphicsContext* gc, const wxRect& rect, int roundness) override;
+	virtual void DrawContent(wxGraphicsContext* gc, const wxRect& rect, int roundness) const override;
 };;

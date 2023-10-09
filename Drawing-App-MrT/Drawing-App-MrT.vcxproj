@@ -161,7 +161,8 @@
     <ClInclude Include="penSizePane.h" />
     <ClInclude Include="selectablePane.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="squigglePath.h" />
+    <ClInclude Include="canvasObject.h" />
+    <ClInclude Include="toolSelectionPane.h" />
     <ClInclude Include="xmlSerializer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +171,8 @@
     <ClCompile Include="penSizePane.cpp" />
     <ClCompile Include="selectablePane.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="canvasObject.cpp" />
+    <ClCompile Include="toolSelectionPane.cpp" />
     <ClCompile Include="xmlSerializer.cpp" />
   </ItemGroup>
   <ItemGroup>
