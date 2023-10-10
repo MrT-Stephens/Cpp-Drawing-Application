@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <img src="https://github.com/MrT-Stephens/Csv-to-Application/blob/master/Images/CSV_to_App_Image.png" alt="drawing" align="center"/>
+  <img src="https://github.com/MrT-Stephens/Cpp-Drawing-Application/blob/master/Images/Drawing-App-1.png" alt="drawing" align="center"/>
 </p>
 
 ## Key Features
