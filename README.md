@@ -22,5 +22,17 @@
 
 ## Installation
 
+To clone and run this application, you'll need [Git](https://git-scm.com) and [Visual Studio](https://visualstudio.microsoft.com/). You can either clone the respiratory directly in [Visual Studio](https://visualstudio.microsoft.com/) or run this in your command line:
+
+```bash
+# Clone this repository
+$ git clone https://github.com/MrT-Stephens/CSharp-Simple-Timer.git
+
+# Go into the repository
+$ cd CSharp-Simple-Timer
+```
+> **Note**
+> Open the '.sln' once cloned as this will open the project directly in [Visual Studio](https://visualstudio.microsoft.com/).
+
 ## Libraries Used
 * [wxWidgets](https://www.wxwidgets.org/) used for the UI components of the application.
