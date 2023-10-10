@@ -67,7 +67,7 @@ private:
     // Tool Selection Pane Items
     wxWrapSizer* m_ToolSelectionPanesSizer;
 
-    constexpr static int s_ToolSelectionPaneAmount = 4;
+    constexpr static int s_ToolSelectionPaneAmount = 5;
     std::array<Tool_Selection_Pane*, s_ToolSelectionPaneAmount> m_ToolSelectionPanes;
 
     // Pen Size Pane Items

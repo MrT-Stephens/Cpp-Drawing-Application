@@ -9,7 +9,8 @@ enum class Tool_Type
 	Pencil = 1000,
 	Line = 1001,
 	Rectangle = 1002,
-	Circle = 1003
+	Circle = 1003,
+	Rounded_Rectangle = 1004
 };
 
 class Tool_Selection_Pane : public Selectable_Pane

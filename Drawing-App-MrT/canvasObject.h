@@ -137,3 +137,21 @@ public:
 	virtual void Serialize(wxXmlNode* node) override;
 	virtual void Deserialize(const wxXmlNode* const node) override;
 };
+
+class Canvas_Rounded_Rectangle : public Canvas_Object
+{
+private:
+	wxRect2DDouble m_Rect;
+
+public:
+	Canvas_Rounded_Rectangle() = default;
+	Canvas_Rounded_Rectangle(const wxPoint2DDouble& origin, const wxColour& colour);
+
+	~Canvas_Rounded_Rectangle() noexcept = default;
+
+	virtual void Draw(wxGraphicsContext* gc) const override;
+	virtual void HandleCreationByMouseDrag(wxPoint currentDragPoint) override;
+
+	virtual void Serialize(wxXmlNode* node) override;
+	virtual void Deserialize(const wxXmlNode* const node) override;
+};

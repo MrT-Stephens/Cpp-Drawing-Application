@@ -66,6 +66,14 @@ void Tool_Selection_Pane::DrawContent(wxGraphicsContext* gc, const wxRect& rect,
 
 		break;
 	}
+	case Tool_Type::Rounded_Rectangle:
+	{
+		gc->DrawRoundedRectangle(-itemWidth / 2, -itemWidth / 2, itemWidth, itemWidth, itemWidth / 4.0);
+
+		break;
+	}
+	default:
+		std::runtime_error("Invalid tool type");
 	}
 
 	gc->PopState();

@@ -308,3 +308,81 @@ void Canvas_Line::Deserialize(const wxXmlNode* const node)
 		wxAtof(end->GetAttribute(Xml_Object_Names::X)),
 		wxAtof(end->GetAttribute(Xml_Object_Names::Y)));
 }
+
+Canvas_Rounded_Rectangle::Canvas_Rounded_Rectangle(const wxPoint2DDouble& origin, const wxColour& colour)
+	: Canvas_Object(colour, Tool_Type::Rounded_Rectangle), m_Rect(origin.m_x, origin.m_y, 0, 0)
+{
+}
+
+void Canvas_Rounded_Rectangle::Draw(wxGraphicsContext* gc) const
+{
+	gc->SetPen(wxPen(m_Colour));
+	gc->SetBrush(wxBrush(m_Colour));
+	gc->DrawRoundedRectangle(m_Rect.m_x, m_Rect.m_y, m_Rect.m_width, m_Rect.m_height, m_Rect.m_width / 4);
+}
+
+void Canvas_Rounded_Rectangle::HandleCreationByMouseDrag(wxPoint currentDragPoint)
+{
+	m_Rect.SetRightBottom(currentDragPoint);
+}
+
+void Canvas_Rounded_Rectangle::Serialize(wxXmlNode* node)
+{
+	wxXmlNode* root = new wxXmlNode(wxXML_ELEMENT_NODE, Xml_Object_Names::Rectangle);
+	root->AddAttribute(Xml_Object_Names::Id, std::to_string((int)this->GetToolId()));
+
+	{
+		wxXmlNode* colour = new wxXmlNode(wxXML_ELEMENT_NODE, Xml_Object_Names::Colour);
+		colour->AddAttribute(new wxXmlAttribute(Xml_Object_Names::R, std::to_string(m_Colour.GetRed())));
+		colour->AddAttribute(new wxXmlAttribute(Xml_Object_Names::G, std::to_string(m_Colour.GetGreen())));
+		colour->AddAttribute(new wxXmlAttribute(Xml_Object_Names::B, std::to_string(m_Colour.GetBlue())));
+
+		root->AddChild(colour);
+	}
+
+	{
+		wxXmlNode* rect = new wxXmlNode(wxXML_ELEMENT_NODE, Xml_Object_Names::Location);
+
+		{
+			wxXmlNode* coordinate = new wxXmlNode(wxXML_ELEMENT_NODE, Xml_Object_Names::LeftTop);
+			coordinate->AddAttribute(Xml_Object_Names::X, std::to_string(m_Rect.GetLeftTop().m_x));
+			coordinate->AddAttribute(Xml_Object_Names::Y, std::to_string(m_Rect.GetLeftTop().m_y));
+
+			rect->AddChild(coordinate);
+		}
+
+		{
+			wxXmlNode* coordinate = new wxXmlNode(wxXML_ELEMENT_NODE, Xml_Object_Names::BottomRight);
+			coordinate->AddAttribute(Xml_Object_Names::X, std::to_string(m_Rect.GetRightBottom().m_x));
+			coordinate->AddAttribute(Xml_Object_Names::Y, std::to_string(m_Rect.GetRightBottom().m_y));
+
+			rect->AddChild(coordinate);
+		}
+
+		root->AddChild(rect);
+	}
+
+	node->AddChild(root);
+}
+
+void Canvas_Rounded_Rectangle::Deserialize(const wxXmlNode* const node)
+{
+	wxXmlNode* colour = node->GetChildren();
+	m_Colour = wxColour(
+		wxAtoi(colour->GetAttribute(Xml_Object_Names::R)),
+		wxAtoi(colour->GetAttribute(Xml_Object_Names::G)),
+		wxAtoi(colour->GetAttribute(Xml_Object_Names::B)));
+
+	wxXmlNode* rect = colour->GetNext();
+	wxXmlNode* leftTop = rect->GetChildren();
+	wxXmlNode* bottomRight = leftTop->GetNext();
+
+	m_Rect = wxRect2DDouble();
+	m_Rect.SetLeftTop({
+		wxAtof(leftTop->GetAttribute(Xml_Object_Names::X)),
+		wxAtof(leftTop->GetAttribute(Xml_Object_Names::Y)) });
+
+	m_Rect.SetRightBottom({
+		wxAtof(bottomRight->GetAttribute(Xml_Object_Names::X)),
+		wxAtof(bottomRight->GetAttribute(Xml_Object_Names::Y)) });
+}

@@ -68,6 +68,14 @@ void Drawing_Canvas_Base::OnMouseDown(wxMouseEvent& event)
 
 		break;
 	}
+	case Tool_Type::Rounded_Rectangle:
+	{
+		m_CanvasObjects.push_back(new Canvas_Rounded_Rectangle(event.GetPosition(), m_CurrentColour));
+
+		break;
+	}
+	default:
+		std::runtime_error("Invalid tool type");
 	}
 
 	m_IsDrawing = true;
