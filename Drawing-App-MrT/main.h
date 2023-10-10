@@ -8,6 +8,8 @@
 #include "penSizePane.h"
 #include "drawingCanvas.h"
 
+#include "Drawing-App-Icon.xpm"
+
 #define MAIN_FONT_TEXT(size) wxFont(size, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, "", wxFONTENCODING_DEFAULT)
 
 enum MenuItem_Ids
@@ -25,9 +27,6 @@ enum MenuItem_Ids
     ID_Copy = 110,
     ID_Paste = 111,
     ID_Clear = 112,
-    ID_ZoomIn = 113,
-    ID_ZoomOut = 114,
-    ID_ZoomReset = 115,
     ID_About = 116
 };
 
@@ -42,7 +41,7 @@ class Main_Frame : public wxFrame
 private:
     // Menu Bar and Menu Items
     wxMenuBar* m_MenuBar;
-    wxMenu* m_MenuFile, * m_MenuEdit, * m_MenuView, * m_MenuHelp;
+    wxMenu* m_MenuFile, * m_MenuEdit, * m_MenuHelp;
 
     // Main Items
     std::wstring m_CurrentFilePath;

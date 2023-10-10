@@ -4,6 +4,8 @@ bool MrT_App::OnInit()
 {
 	Main_Frame* mainFrame = new Main_Frame("Drawing App", wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE);
 
+	mainFrame->SetIcon(wxIcon(Drawing_App_Icon));
+
 	mainFrame->Show(true);
 
 	return true;
@@ -46,18 +48,12 @@ void Main_Frame::SetUpMenuBar()
 	m_MenuEdit->Append(ID_Paste, "&Paste\tCtrl-V", "Paste the selected object");
 	m_MenuEdit->Append(ID_Clear, "&Clear\tDel", "Clear the all objects");
 
-	m_MenuView = new wxMenu;
-	m_MenuView->Append(ID_ZoomIn, "Zoom &In\tCtrl-+", "Zoom in");
-	m_MenuView->Append(ID_ZoomOut, "Zoom &Out\tCtrl--", "Zoom out");
-	m_MenuView->Append(ID_ZoomReset, "Reset &Zoom\tCtrl-0", "Reset zoom");
-
 	m_MenuHelp = new wxMenu;
 	m_MenuHelp->Append(ID_About, "&About\tF1", "Show info about this program");
 
 	m_MenuBar = new wxMenuBar;
 	m_MenuBar->Append(m_MenuFile, "&File");
 	m_MenuBar->Append(m_MenuEdit, "&Edit");
-	m_MenuBar->Append(m_MenuView, "&View");
 	m_MenuBar->Append(m_MenuHelp, "&Help");
 
 	SetMenuBar(m_MenuBar);
@@ -78,10 +74,6 @@ void Main_Frame::SetUpMenuEvents()
 	Bind(wxEVT_MENU, &Main_Frame::OnCopy, this, ID_Copy);
 	Bind(wxEVT_MENU, &Main_Frame::OnPaste, this, ID_Paste);
 	Bind(wxEVT_MENU, &Main_Frame::OnClear, this, ID_Clear);
-
-	Bind(wxEVT_MENU, &Main_Frame::OnZoomIn, this, ID_ZoomIn);
-	Bind(wxEVT_MENU, &Main_Frame::OnZoomOut, this, ID_ZoomOut);
-	Bind(wxEVT_MENU, &Main_Frame::OnZoomReset, this, ID_ZoomReset);
 
 	Bind(wxEVT_MENU, &Main_Frame::OnAbout, this, ID_About);
 }
@@ -377,21 +369,6 @@ void Main_Frame::OnPaste(wxCommandEvent& event)
 void Main_Frame::OnClear(wxCommandEvent& event)
 {
 	m_DrawingCanvas->ClearCanvas();
-}
-
-void Main_Frame::OnZoomIn(wxCommandEvent& event)
-{
-	wxMessageBox("Zoom In");
-}
-
-void Main_Frame::OnZoomOut(wxCommandEvent& event)
-{
-	wxMessageBox("Zoom Out");
-}
-
-void Main_Frame::OnZoomReset(wxCommandEvent& event)
-{
-	wxMessageBox("Zoom Reset");
 }
 
 void Main_Frame::OnAbout(wxCommandEvent& event)
