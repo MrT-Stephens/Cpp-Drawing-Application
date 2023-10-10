@@ -98,6 +98,7 @@ private:
     void OnOpen(wxCommandEvent& event);
     void OnSave(wxCommandEvent& event);
     void OnSaveAs(wxCommandEvent& event);
+    void OnExport(wxCommandEvent& event);
     void OnQuit(wxCommandEvent& event);
     void OnUndo(wxCommandEvent& event);
     void OnRedo(wxCommandEvent& event);

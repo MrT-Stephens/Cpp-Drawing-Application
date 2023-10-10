@@ -10,6 +10,8 @@ Drawing_Canvas_Base::Drawing_Canvas_Base(wxWindow* parent, wxWindowID id, const 
 	this->Bind(wxEVT_MOTION, &Drawing_Canvas_Base::OnMouseMove, this);
 	this->Bind(wxEVT_LEFT_UP, &Drawing_Canvas_Base::OnMouseUp, this);
 	this->Bind(wxEVT_LEAVE_WINDOW, &Drawing_Canvas_Base::OnMouseLeave, this);
+
+	wxImage::AddHandler(new wxPNGHandler());
 }
 
 Drawing_Canvas_Base::~Drawing_Canvas_Base() noexcept
@@ -168,6 +170,37 @@ void Drawing_Canvas_Base::LoadCanvas(const wxString& path)
 	}
 
 	this->Refresh();
+}
+
+void Drawing_Canvas_Base::ExportCanvas(const wxString& path)
+{
+	wxBitmap bitmap(this->GetSize() * this->GetContentScaleFactor());
+
+	wxImage image(bitmap.ConvertToImage());
+	image.SetAlpha(0);
+
+	bitmap = wxBitmap(image);
+
+	wxMemoryDC memDC;
+
+	memDC.SetUserScale(this->GetContentScaleFactor(), this->GetContentScaleFactor());
+
+	memDC.SelectObject(bitmap);
+	memDC.Clear();
+
+	wxGraphicsContext* gc = wxGraphicsContext::Create(memDC);
+
+	if (gc)
+	{
+		for (const auto& squiggle : m_CanvasObjects)
+		{
+			squiggle->Draw(gc);
+		}
+
+		delete gc;
+	}
+
+	bitmap.SaveFile(path, wxBITMAP_TYPE_PNG);
 }
 
 bool Drawing_Canvas_Base::IsCanvasEmpty() const

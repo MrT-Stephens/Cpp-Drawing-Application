@@ -26,6 +26,7 @@ public:
 
 	void SaveCanvas(const wxString& path);
 	void LoadCanvas(const wxString& path);
+	void ExportCanvas(const wxString& path);
 
 	bool IsCanvasEmpty() const;
 

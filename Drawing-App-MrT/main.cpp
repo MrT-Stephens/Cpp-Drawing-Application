@@ -69,6 +69,7 @@ void Main_Frame::SetUpMenuEvents()
 	Bind(wxEVT_MENU, &Main_Frame::OnOpen, this, ID_Open);
 	Bind(wxEVT_MENU, &Main_Frame::OnSave, this, ID_Save);
 	Bind(wxEVT_MENU, &Main_Frame::OnSaveAs, this, ID_SaveAs);
+	Bind(wxEVT_MENU, &Main_Frame::OnExport, this, ID_Export);
 	Bind(wxEVT_MENU, &Main_Frame::OnQuit, this, ID_Quit);
 
 	Bind(wxEVT_MENU, &Main_Frame::OnUndo, this, ID_Undo);
@@ -298,6 +299,17 @@ void Main_Frame::OnSaveAs(wxCommandEvent& event)
 	m_CurrentFilePath = saveFileDialog.GetPath().ToStdWstring();
 
 	m_DrawingCanvas->SaveCanvas(saveFileDialog.GetPath());
+}
+
+void Main_Frame::OnExport(wxCommandEvent& event)
+{
+	wxFileDialog saveFileDialog(this, _("Save drawing"), "", "",
+		"PNG files (*.png)|*.png", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+	if (saveFileDialog.ShowModal() == wxID_CANCEL)
+		return;
+
+	m_DrawingCanvas->ExportCanvas(saveFileDialog.GetPath());
 }
 
 void Main_Frame::OnQuit(wxCommandEvent& event)
