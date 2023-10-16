@@ -48,3 +48,6 @@ $ cd Cpp-Drawing-Application
 
 ## Libraries Used
 * [wxWidgets](https://www.wxwidgets.org/) used for the UI components of the application.
+
+## References
+* Based of ([Lukes Dev Tutorials - YouTube](https://www.youtube.com/@lukesdevtutorials)) videos on graphics in wxWidgets.
