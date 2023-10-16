@@ -318,7 +318,13 @@ void Canvas_Rounded_Rectangle::Draw(wxGraphicsContext* gc) const
 {
 	gc->SetPen(wxPen(m_Colour));
 	gc->SetBrush(wxBrush(m_Colour));
-	gc->DrawRoundedRectangle(m_Rect.m_x, m_Rect.m_y, m_Rect.m_width, m_Rect.m_height, m_Rect.m_width / 4);
+
+	gc->DrawRoundedRectangle(
+		(m_Rect.m_width < 0.0) ? m_Rect.GetRightBottom().m_x : m_Rect.m_x, 
+		(m_Rect.m_height < 0.0) ? m_Rect.GetRightBottom().m_y : m_Rect.m_y, 
+		std::abs(m_Rect.m_width), 
+		std::abs(m_Rect.m_height), 
+		std::abs(m_Rect.m_width / 4));
 }
 
 void Canvas_Rounded_Rectangle::HandleCreationByMouseDrag(wxPoint currentDragPoint)

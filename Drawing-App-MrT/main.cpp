@@ -17,7 +17,9 @@ Main_Frame::Main_Frame(const wxString& title, const wxPoint& pos, const wxSize& 
 	: wxFrame(nullptr, wxID_ANY, title, pos, size, style)
 {
 	SetBackgroundColour(wxSystemSettings::GetAppearance().IsDark() ? wxColour(44, 40, 40) : wxColour(244, 243, 243));
+	SetForegroundColour(wxSystemSettings::GetAppearance().IsDark() ? wxColour(244, 243, 243) : wxColour(44, 40, 40));
 	SetMinSize(FromDIP(wxSize(1000, 800)));
+	SetFont(MAIN_FONT_TEXT(13));
 
 	SetUpMenuBar();
 	SetUpSplitterPanels();
@@ -108,15 +110,33 @@ void Main_Frame::SetUpSplitterPanels()
 
 	m_ToolsMainSizer = new wxBoxSizer(wxVERTICAL);
 
+	m_ColourPaneText = new wxStaticText(m_ToolsPanel, wxID_ANY, "Colour");
+	m_ColourPaneText->SetForegroundColour(this->GetForegroundColour());
+	m_ColourPaneText->SetFont(this->GetFont().Bold());
+
+	m_ToolsMainSizer->Add(m_ColourPaneText, 0, wxALL | wxALIGN_LEFT, FromDIP(10));
+
 	m_ColourPanesSizer = new wxWrapSizer(wxHORIZONTAL);
 	SetUpColourPanes(m_ToolsPanel, m_ColourPanesSizer);
 
 	m_ToolsMainSizer->Add(m_ColourPanesSizer, 0, wxALL, FromDIP(5));
 
+	m_ToolPaneText = new wxStaticText(m_ToolsPanel, wxID_ANY, "Tool");
+	m_ToolPaneText->SetForegroundColour(this->GetForegroundColour());
+	m_ToolPaneText->SetFont(this->GetFont().Bold());
+
+	m_ToolsMainSizer->Add(m_ToolPaneText, 0, wxALL | wxALIGN_LEFT, FromDIP(10));
+
 	m_ToolSelectionPanesSizer = new wxWrapSizer(wxHORIZONTAL);
 	SetUpToolSelectionPanes(m_ToolsPanel, m_ToolSelectionPanesSizer);
 
 	m_ToolsMainSizer->Add(m_ToolSelectionPanesSizer, 0, wxALL, FromDIP(5));
+
+	m_PenSizePaneText = new wxStaticText(m_ToolsPanel, wxID_ANY, "Pen Size");
+	m_PenSizePaneText->SetForegroundColour(this->GetForegroundColour());
+	m_PenSizePaneText->SetFont(this->GetFont().Bold());
+
+	m_ToolsMainSizer->Add(m_PenSizePaneText, 0, wxALL | wxALIGN_LEFT, FromDIP(10));
 
 	m_PenSizePanesSizer = new wxWrapSizer(wxHORIZONTAL);
 	SetUpPenSizePanes(m_ToolsPanel, m_PenSizePanesSizer);
@@ -199,10 +219,12 @@ void Main_Frame::SelectToolSelectionPane(Tool_Selection_Pane* pane)
 
 	if (pane->GetToolType() == Tool_Type::Pencil || pane->GetToolType() == Tool_Type::Line)
 	{
+		m_PenSizePaneText->Show(true);
 		m_PenSizePanesSizer->ShowItems(true);
 	}
 	else
 	{
+		m_PenSizePaneText->Show(false);
 		m_PenSizePanesSizer->ShowItems(false);
 	}
 

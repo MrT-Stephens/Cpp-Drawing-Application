@@ -50,6 +50,7 @@ private:
     wxBoxSizer* m_ToolsMainSizer;
 
     // Colour Panes Items
+    wxStaticText* m_ColourPaneText;
     wxWrapSizer* m_ColourPanesSizer;
 
     constexpr static int s_ColourPaneAmount = 12;
@@ -64,12 +65,14 @@ private:
     };
 
     // Tool Selection Pane Items
+    wxStaticText* m_ToolPaneText;
     wxWrapSizer* m_ToolSelectionPanesSizer;
 
     constexpr static int s_ToolSelectionPaneAmount = 5;
     std::array<Tool_Selection_Pane*, s_ToolSelectionPaneAmount> m_ToolSelectionPanes;
 
     // Pen Size Pane Items
+    wxStaticText* m_PenSizePaneText;
     wxWrapSizer* m_PenSizePanesSizer;
 
     constexpr static int s_PenSizePaneAmount = 6;
@@ -105,9 +108,6 @@ private:
     void OnCopy(wxCommandEvent& event);
     void OnPaste(wxCommandEvent& event);
     void OnClear(wxCommandEvent& event);
-    void OnZoomIn(wxCommandEvent& event);
-    void OnZoomOut(wxCommandEvent& event);
-    void OnZoomReset(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
 
 public:
