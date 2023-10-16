@@ -11,7 +11,8 @@
 <p align="center">
   <a href="#key-features">Key Features</a> ▪︎
   <a href="#installation">Installation</a> ▪︎
-  <a href="#libraries-used">Libraries Used</a>
+  <a href="#libraries-used">Libraries Used</a> ▪︎
+  <a href="#references">References</a>
 </p>
 
 <p align="center">
@@ -50,4 +51,4 @@ $ cd Cpp-Drawing-Application
 * [wxWidgets](https://www.wxwidgets.org/) used for the UI components of the application.
 
 ## References
-* Based of ([Lukes Dev Tutorials - YouTube](https://www.youtube.com/@lukesdevtutorials)) videos on graphics in wxWidgets.
+* Based of ([Lukes Dev Tutorials - YouTube](https://www.youtube.com/@lukesdevtutorials)) videos on graphics in C++ and wxWidgets.
