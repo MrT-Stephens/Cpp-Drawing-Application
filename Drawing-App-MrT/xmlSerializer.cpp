@@ -45,30 +45,20 @@ bool XML_Serializer::Deserialize(const wxString& path, std::vector<Canvas_Object
 		switch (toolId)
 		{
 		case Tool_Type::Pencil:
-		{
 			paths.push_back(new Canvas_Squiggle());
 			break;
-		}
 		case Tool_Type::Line:
-		{
 			paths.push_back(new Canvas_Line());
 			break;
-		}
 		case Tool_Type::Rectangle:
-		{
 			paths.push_back(new Canvas_Rectangle());
 			break;
-		}
 		case Tool_Type::Circle:
-		{
 			paths.push_back(new Canvas_Circle());
 			break;
-		}
 		case Tool_Type::Rounded_Rectangle:
-		{
 			paths.push_back(new Canvas_Rounded_Rectangle());
 			break;
-		}
 		default:
 			std::runtime_error("Unknown object type. Object Id: " + std::to_string(static_cast<int>(toolId)));
 		}
