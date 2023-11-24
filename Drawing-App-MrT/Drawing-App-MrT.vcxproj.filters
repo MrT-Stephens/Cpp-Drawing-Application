@@ -69,4 +69,7 @@
   <ItemGroup>
     <Manifest Include="Drawing App.exe.manifest" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc" />
+  </ItemGroup>
 </Project>
